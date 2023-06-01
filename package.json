@@ -1,0 +1,19 @@
+{
+  "name": "consoleapp",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "cli-table": "^0.3.11",
+    "faker": "^6.6.6",
+    "lodash": "^4.17.21",
+    "rxjs": "^7.8.1"
+  }
+}

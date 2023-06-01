@@ -85,7 +85,7 @@ function fileWalker(dir, hight) {
     let list = fs.readdirSync(dir);
     let obj;
     if (!list.length) return {
-        hight: hight,
+        hight: hight + 1,
         dirName: dir.toString()
     };
     let filesCount = 0;

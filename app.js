@@ -67,7 +67,7 @@ function getCurrentDirContent() {
             console.log('Unable to scan directory: ' + err);
         }
         files.sort().forEach(function (file) {
-            const filePath = __dirname + '/' + file.toString();
+            const filePath = path.resolve(__dirname, file);
             if (!statSync(filePath).isFile()) {
                 files.splice(files.findIndex(element => element === file), 1)
                 files.unshift(file);
@@ -81,31 +81,31 @@ function getCurrentDirContent() {
         }, 10000);
     });
 }
-function fileWalker(dir, high) {
+function fileWalker(dir, hight) {
     let list = fs.readdirSync(dir);
     let obj;
     if (!list.length) return {
-        high: high,
+        hight: hight,
         dirName: dir.toString()
     };
     let filesCount = 0;
     list.forEach(function (file) {
-        const filePath = dir + '/' + file.toString();
+        const filePath = path.resolve(dir, file.toString());
         if (!statSync(filePath).isDirectory()) {
             filesCount++;
         }
         else {
             if (!obj) {
-                obj = fileWalker(filePath, high + 1);
+                obj = fileWalker(filePath, hight + 1);
             }
-            if (obj && fileWalker(filePath, high + 1).high > obj.high) {
-                obj = fileWalker(filePath, high + 1);
+            if (obj && fileWalker(filePath, hight + 1).hight > obj.hight) {
+                obj = fileWalker(filePath, hight + 1);
             }
         }
     });
     if (filesCount === list.length) {
         return {
-            high: high + 1,
+            hight: hight + 1,
             dirName: dir.toString()
         }
     }
@@ -113,4 +113,12 @@ function fileWalker(dir, high) {
         return obj;
     }
 }
-console.log(fileWalker('node_modules', 0));
+const deepestDirName = fileWalker('node_modules', 0).dirName;
+const deepestFilePath = path.resolve(deepestDirName, 'file.txt');
+fs.writeFile(deepestFilePath, 'Hello World!!!', (err) => {
+    if (err)
+        console.log(err);
+    else {
+        console.log("File written successfully\n");
+    }
+});
